@@ -3,11 +3,14 @@ TALOS_VERSION = v1.10.2
 SBCOVERLAY_VERSION = main
 
 REGISTRY ?= ghcr.io
-REGISTRY_USERNAME ?= talos-rpi5
+REGISTRY_USERNAME ?= ctf-rs
 
 TAG ?= $(shell git describe --tags --exact-match)
 
-EXTENSIONS ?= ghcr.io/siderolabs/gvisor:20250505.0@sha256:d7503b59603f030b972ceb29e5e86979e6c889be1596e87642291fee48ce380c
+ISCSI_TOOLS_EXTENSION ?= ghcr.io/siderolabs/iscsi-tools:v0.1.6@sha256:46103193e27fd871bc4e27292b84ec34fefd20d00bf799d8052ce449e79114bd
+UTIL_LINUX_TOOLS_EXTENSION ?= ghcr.io/siderolabs/util-linux-tools:2.40.4@sha256:bcaf485539d7d07ee2988d1f189df74c54f8ad818017bcebe88207618e54b86c
+GVISOR_EXTENSION ?= ghcr.io/siderolabs/gvisor:20250505.0@sha256:b7faf7afed8f6c0cee8122b5ae47b4b7b7636a7cf5ab9382f403360861b97fbd
+KATA_CONTAINERS_EXTENSION ?= ghcr.io/siderolabs/kata-containers:3.17.0@sha256:3597623b4b4eaf907d7287766725a35509e0e2de965743f34143d213cbb76ba6
 
 PKG_REPOSITORY = https://github.com/siderolabs/pkgs.git
 TALOS_REPOSITORY = https://github.com/siderolabs/talos.git
@@ -113,7 +116,10 @@ installer:
 			--base-installer-image="$(REGISTRY)/$(REGISTRY_USERNAME)/installer:$(TALOS_TAG)" \
 			--overlay-name="rpi5" \
 			--overlay-image="$(REGISTRY)/$(REGISTRY_USERNAME)/sbc-raspberrypi5:$(SBCOVERLAY_TAG)" \
-			--system-extension-image="$(EXTENSIONS)"
+			--system-extension-image="$(ISCSI_TOOLS_EXTENSION)" \
+			--system-extension-image="$(UTIL_LINUX_TOOLS_EXTENSION)" \
+			--system-extension-image="$(GVISOR_EXTENSION)" \
+			--system-extension-image="$(KATA_CONTAINERS_EXTENSION)"
 
 
 
